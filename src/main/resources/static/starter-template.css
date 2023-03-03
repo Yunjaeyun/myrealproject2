@@ -5,3 +5,14 @@ body {
     padding: 3rem 1.5rem;
     text-align: center;
   }
+
+
+/*   
+  아래주석은 homecontroller와 index.html그리고 starter_template.css만 만든상태일때 작성함
+  localhost:8080을 해보면, index.html은 error로표시되지않는다.
+  그러나 localhost:8080/starter-template-css는 잘 나온다.
+  즉, static파일은 정적인 파일, 바로 접근을 할수 있는 경로이지만,
+  template는 서버쪽에서 사용할 외부적으로 관리하는 파일이다.
+  확장자는 html이지만, thymeleaf 저장되는것이다.
+
+  <link href =".starter-template.css" rel="stylesheet"> 이 주소를 index.html에 추가하면 잘 뜬다. */

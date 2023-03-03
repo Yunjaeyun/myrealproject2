@@ -4,7 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-@Controller
+@Controller //화면으로 보기 위한 컨트롤러 작성
 @RequestMapping("/board")
 public class BoardController {
 
