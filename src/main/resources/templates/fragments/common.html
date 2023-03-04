@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-
+<!--index.html과 list.html파일에서 이 리플렛을 통해서 이 헤드를 참조하면된다. -->
+<!--  -->
 <head th:fragment="head(title)">
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -9,13 +10,15 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
         integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
-    <link href="starter-template.css" th:href="@{/starter-template.css}" rel="stylesheet">
+    <link href="starter-template.css" th:href="@{/starter-template.css}" rel="stylesheet">  <!--글자가 뜨지않는오류해결:list.html에는 th:href로 경로를 잘 지정해주었다.
+        .common.html에도 href뿐만 아니라   컨텍스트 로스트를 포함해서 서버경로에맞게 잘반영되는 th:href속성추가 -->
 
-    <title th:text="${title}">Hello, Spring boot!</title>
+    <title th:text="${title}">Hello, Spring boot!</title>       
+    <!--타이틀같은 경우는 화면마다 달라야한다. 근데 이부분은  파라미터를 통해서전달받을 수 있다.  -->
 </head>
-
+<!--nav부분이 공통으로 들어가야됨. 페이지 공통부분임. index.html에서 복사  -->
 <body>
-    <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top" th:fragment="menu(menu)">
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top" th:fragment="menu(menu)"> <!-- menu이름짓기 -->
         <a class="navbar-brand" href="#">Spring boot Tutorial</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
             aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
@@ -23,13 +26,32 @@
         </button>
 
         <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-            <ul class="navbar-nav mr-auto">
+            <ul class="navbar-nav mr-auto"> 
+                <!-- 수정필요한이유::홈/게시판 페이지창에 있을시 텍스트활성화 & 링크연결(각 메뉴클릭시 각페이지로 이동, 홈은 spring boot ~다루기, 게시판은 게시판글자와 기타) 
+                    /ps.thymeleaft 문법: 앞에문장이 true일때만 뒤에있는 class가 추가된다. 조건변경해주자.
+                fragment 로 메뉴이름이 지정되어있는데, 메뉴마다 다르기때문에 이문제를 해결하기위해서는. 이 menu 이 fragment를 호출할때 파라메터를 넘겨주면된다.
+                th:replace="fragments/common :: menu 
+                =>th:replace="fragments/common :: menu('home')
+
+                인덱스첫메뉴일때는 index.html파일에는 홈으로 넘기고, list.html파일은  board 이렇게 넘겨준다
+                th:replace="fragments/common :: menu
+                => th:replace="fragments/common :: menu('board')
+
+                common.html에서는 파라미터로th:fragment="menu"
+                => th:fragment="menu(menu)"
+                menu이라는 파라미터로 받는다. 이 파라미터를 이용해서 값에따라액티브속성을 추가를 할지말지 정하면된다3853.-->
                 <li class="nav-item" th:classappend="${menu}== 'home'? 'active'">
                     <a class="nav-link" href="#" th:href="@{/}">홈 <span class="sr-only" th:if="${menu}== 'home'">(current)</span></a>
                 </li>
                 <li class="nav-item" th:classappend="${menu}== 'board'? 'active'">
                     <a class="nav-link" href="#" th:href="@{/board/list}">게시판<span class="sr-only" th:if="${menu}== 'board'">(current)</span></a>
                 </li>
+                <!-- <span class="sr-only" th:if="${menu}== 'home'">(current)</span>: 스크린리더기(부트스태랩기능)도 th조건문으로 같이 포함시켜준다.
+                결과, 현재 활성화된 메뉴일때는 이 current지시자가 화면에 표시가 되도록 . -->
+
+
+                <!-- 링크연결 홈일때 th:href="@{/}  , 게시판일때 th:href="@{/board/list}/컨트롤러에서 지정한 그 경로를 이렇게링크시켜주면된다. -->
+
                 <!-- <li class="nav-item">
                     <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
                 </li>
